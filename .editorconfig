@@ -1,0 +1,83 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# All files
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = lf
+
+# C++ source files
+[*.{cpp,h,hpp,c,cc,cxx,hxx}]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+trim_trailing_whitespace = true
+
+# Lua script files
+[*.lua]
+indent_style = space
+indent_size = 4
+max_line_length = 100
+trim_trailing_whitespace = true
+
+# Premake5 build scripts
+[premake5.lua]
+indent_style = space
+indent_size = 4
+
+# Visual Studio project files
+[*.{vcxproj,vcxproj.filters,sln}]
+indent_style = tab
+end_of_line = crlf
+
+# CMake files (future cross-platform build support)
+[{CMakeLists.txt,*.cmake}]
+indent_style = space
+indent_size = 4
+
+# Makefiles (Unix/Linux build support)
+[{Makefile,*.mk}]
+indent_style = tab
+
+# Shell scripts (cross-platform scripts)
+[*.{sh,bash}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+# Batch/PowerShell scripts (Windows)
+[*.{bat,cmd,ps1}]
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+
+# JSON configuration files
+[*.json]
+indent_style = space
+indent_size = 2
+
+# YAML configuration files
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# XML configuration files
+[*.xml]
+indent_style = space
+indent_size = 2
+
+# Markdown documentation
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+# Git configuration
+[.gitattributes]
+end_of_line = lf
+
+[.gitignore]
+end_of_line = lf

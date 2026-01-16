@@ -1,0 +1,311 @@
+# NanSu-Engine .gitignore
+# C++ Game Engine + Lua Game Logic with premake5 build system
+
+#######################
+# Build Outputs
+#######################
+
+# Binaries directory (compiled executables and libraries)
+Binaries/
+Bin/
+bin/
+
+# Build intermediate files
+Build/
+build/
+Intermediate/
+*.obj
+*.o
+*.lo
+*.slo
+*.ko
+*.elf
+
+# Libraries
+*.lib
+*.a
+*.la
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+
+#######################
+# Visual Studio
+#######################
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.user
+
+# Visual Studio cache/options directory
+.vs/
+.vscode/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Visual Studio Trace Files
+*.e2e
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+#######################
+# Premake5
+#######################
+
+# Generated project files (these should be regenerated)
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+Makefile
+*.make
+*.workspace
+*.project
+
+# Keep premake5 executable and script
+!premake5.exe
+!premake5.lua
+!**/premake5.lua
+
+#######################
+# C/C++ Compiler
+#######################
+
+# Precompiled Headers
+*.gch
+*.pch
+*.pdb
+*.ipdb
+*.idb
+*.ilk
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Linker output
+*.exp
+*.map
+
+#######################
+# Lua
+#######################
+
+# Compiled Lua files
+luac.out
+
+# Lua bytecode
+*.luac
+
+#######################
+# CMake (for future cross-platform support)
+#######################
+
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+#######################
+# Cross-Platform
+#######################
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+#######################
+# IDEs and Editors
+#######################
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+#######################
+# Asset Files (optional - uncomment if needed)
+#######################
+
+# Uncomment to ignore large asset files
+# *.psd
+# *.fbx
+# *.blend
+# *.wav
+# *.mp3
+# *.ogg
+
+#######################
+# Documentation
+#######################
+
+# Generated documentation
+docs/html/
+docs/latex/
+Doxygen/
+
+#######################
+# Third Party Libraries
+#######################
+
+# Dependency directories (if using package managers)
+ThirdParty/*/lib/
+ThirdParty/*/bin/
+ThirdParty/*/build/
+
+# Keep third party source code structure
+!ThirdParty/**/include/
+!ThirdParty/**/src/
+
+#######################
+# Logs and Databases
+#######################
+
+*.log
+*.sql
+*.sqlite
+*.db
+
+#######################
+# Temporary Files
+#######################
+
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.cache
+*.old
+*~
+
+#######################
+# Package Managers
+#######################
+
+# Conan
+conaninfo.txt
+conanbuildinfo.*
+conan.lock
+
+# vcpkg
+vcpkg_installed/
+.vcpkg/
+
+#######################
+# Profiling and Testing
+#######################
+
+*.gcda
+*.gcno
+*.gcov
+*.lcov
+
+# Test results
+TestResults/
+test-results/
+*.trx
+
+#######################
+# Game Engine Specific
+#######################
+
+# Asset cache
+AssetCache/
+Cache/
+
+# Saved games and user data (development)
+Saved/
+UserData/
+Logs/
+
+# Shader cache
+ShaderCache/
+
+# Content builds
+Content/Build/
