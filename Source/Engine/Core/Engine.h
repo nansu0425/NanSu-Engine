@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <iostream>
 
 namespace NanSu
 {
@@ -13,7 +12,7 @@ namespace NanSu
 
         void Initialize();
         void Shutdown();
-        
+
         std::string GetVersion() const;
         void PrintInfo() const;
 

@@ -1,21 +1,21 @@
 #include "Core/Engine.h"
+#include "Core/Logger.h"
 #include <iostream>
 
 int main()
 {
-    std::cout << "\n========== Game Application ==========" << std::endl;
-    
     NanSu::Engine engine;
     engine.Initialize();
     engine.PrintInfo();
-    
-    std::cout << "\n[Game] Running game-specific code..." << std::endl;
-    std::cout << "[Game] Game is running!" << std::endl;
-    
+
+    NS_INFO("========== Game Application ==========");
+    NS_INFO("Running game-specific code...");
+    NS_INFO("Game is running!");
+
     engine.Shutdown();
-    
+
     std::cout << "\n[Game] Press Enter to exit..." << std::endl;
     std::cin.get();
-    
+
     return 0;
 }

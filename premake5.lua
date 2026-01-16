@@ -47,8 +47,11 @@ project "Engine"
 
     includedirs {
         "Source",
-        "Source/Engine"
+        "Source/Engine",
+        "ThirdParty/spdlog/include"
     }
+
+    buildoptions { "/utf-8" }
 
 --------------------------------------------------------------------------------
 -- 2. Editor (실행 파일)
@@ -70,10 +73,13 @@ project "Editor"
 
     includedirs {
         "Source",
-        "Source/Engine"
+        "Source/Engine",
+        "ThirdParty/spdlog/include"
     }
 
     links { "Engine" }
+
+    buildoptions { "/utf-8" }
 
 --------------------------------------------------------------------------------
 -- 3. Game (샌드박스)
@@ -95,7 +101,10 @@ project "Game"
 
     includedirs {
         "Source",
-        "Source/Engine"
+        "Source/Engine",
+        "ThirdParty/spdlog/include"
     }
 
     links { "Engine" }
+
+    buildoptions { "/utf-8" }

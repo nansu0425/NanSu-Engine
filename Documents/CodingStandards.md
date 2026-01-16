@@ -79,7 +79,7 @@ private:
     static int s_InstanceCount;   // Static member variable
 };
 ```
-- Use **PascalCase** with `m_` prefix for member variables
+- Use **camelCase** with `m_` prefix for member variables
 - Use `s_` prefix for static member variables
 - Use `g_` prefix for global variables (avoid when possible)
 

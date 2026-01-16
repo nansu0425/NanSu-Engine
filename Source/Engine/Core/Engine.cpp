@@ -1,4 +1,5 @@
 #include "Core/Engine.h"
+#include "Core/Logger.h"
 
 namespace NanSu
 {
@@ -6,7 +7,7 @@ namespace NanSu
         : m_Version("1.0.0")
         , m_IsInitialized(false)
     {
-        std::cout << "[Engine] Constructor called" << std::endl;
+        // Logger will be initialized in Initialize()
     }
 
     Engine::~Engine()
@@ -15,14 +16,15 @@ namespace NanSu
         {
             Shutdown();
         }
-        std::cout << "[Engine] Destructor called" << std::endl;
+        // Logger has been shutdown in Shutdown()
     }
 
     void Engine::Initialize()
     {
         if (!m_IsInitialized)
         {
-            std::cout << "[Engine] Initializing NanSu Engine v" << m_Version << std::endl;
+            Logger::Initialize();
+            NS_ENGINE_INFO("Initializing NanSu Engine v{}", m_Version);
             m_IsInitialized = true;
         }
     }
@@ -31,8 +33,9 @@ namespace NanSu
     {
         if (m_IsInitialized)
         {
-            std::cout << "[Engine] Shutting down Engine" << std::endl;
+            NS_ENGINE_INFO("Shutting down Engine");
             m_IsInitialized = false;
+            Logger::Shutdown();
         }
     }
 
@@ -43,29 +46,27 @@ namespace NanSu
 
     void Engine::PrintInfo() const
     {
-        std::cout << "==================================" << std::endl;
-        std::cout << "    NanSu Engine" << std::endl;
-        std::cout << "    Version: " << m_Version << std::endl;
-        std::cout << "    Platform: ";
-        
+        NS_ENGINE_INFO("==================================");
+        NS_ENGINE_INFO("    NanSu Engine");
+        NS_ENGINE_INFO("    Version: {}", m_Version);
+
+        std::string platform;
 #ifdef NS_PLATFORM_WINDOWS
-        std::cout << "Windows";
+        platform = "Windows";
 #else
-        std::cout << "Unknown";
+        platform = "Unknown";
 #endif
+        NS_ENGINE_INFO("    Platform: {}", platform);
 
-        std::cout << std::endl;
-        std::cout << "    Configuration: ";
-
+        std::string config;
 #ifdef NS_DEBUG
-        std::cout << "Debug";
+        config = "Debug";
 #elif defined(NS_RELEASE)
-        std::cout << "Release";
+        config = "Release";
 #elif defined(NS_DISTRIBUTION)
-        std::cout << "Distribution";
+        config = "Distribution";
 #endif
-
-        std::cout << std::endl;
-        std::cout << "==================================" << std::endl;
+        NS_ENGINE_INFO("    Configuration: {}", config);
+        NS_ENGINE_INFO("==================================");
     }
 }
