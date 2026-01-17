@@ -1,5 +1,6 @@
 #include "EnginePCH.h"
 #include "Core/Application.h"
+#include "Core/Input.h"
 #include "Events/EventDispatcher.h"
 
 namespace NanSu
@@ -14,10 +15,14 @@ namespace NanSu
         // Create the main window
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback(NS_BIND_EVENT_FN(Application::OnEvent));
+
+        // Initialize input system
+        Input::Initialize();
     }
 
     Application::~Application()
     {
+        Input::Shutdown();
         s_Instance = nullptr;
     }
 

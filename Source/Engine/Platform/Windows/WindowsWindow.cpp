@@ -1,6 +1,11 @@
 #include "EnginePCH.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "Events/WindowEvent.h"
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
+#include "Input/KeyCodes.h"
+#include "Input/MouseCodes.h"
+#include <windowsx.h>
 
 #ifdef NS_PLATFORM_WINDOWS
 
@@ -171,6 +176,142 @@ namespace NanSu
             {
                 PostQuitMessage(0);
                 return 0;
+            }
+
+            // =================================================================
+            // Keyboard Events
+            // =================================================================
+            case WM_KEYDOWN:
+            case WM_SYSKEYDOWN:
+            {
+                int32 scanCode = static_cast<int32>((lParam >> 16) & 0xFF);
+                bool extended = (lParam & (1 << 24)) != 0;
+                bool isRepeat = (lParam & (1 << 30)) != 0;
+
+                KeyCode keyCode = VirtualKeyToKeyCode(static_cast<int32>(wParam), scanCode, extended);
+                KeyPressedEvent event(static_cast<int32>(keyCode), isRepeat);
+                data->EventCallback(event);
+
+                // Return 0 for SYSKEYDOWN to prevent default system behavior (e.g., Alt menu)
+                if (msg == WM_SYSKEYDOWN)
+                {
+                    return 0;
+                }
+                break;
+            }
+
+            case WM_KEYUP:
+            case WM_SYSKEYUP:
+            {
+                int32 scanCode = static_cast<int32>((lParam >> 16) & 0xFF);
+                bool extended = (lParam & (1 << 24)) != 0;
+
+                KeyCode keyCode = VirtualKeyToKeyCode(static_cast<int32>(wParam), scanCode, extended);
+                KeyReleasedEvent event(static_cast<int32>(keyCode));
+                data->EventCallback(event);
+
+                if (msg == WM_SYSKEYUP)
+                {
+                    return 0;
+                }
+                break;
+            }
+
+            case WM_CHAR:
+            {
+                KeyTypedEvent event(static_cast<int32>(wParam));
+                data->EventCallback(event);
+                break;
+            }
+
+            // =================================================================
+            // Mouse Events
+            // =================================================================
+            case WM_MOUSEMOVE:
+            {
+                f32 x = static_cast<f32>(GET_X_LPARAM(lParam));
+                f32 y = static_cast<f32>(GET_Y_LPARAM(lParam));
+                MouseMovedEvent event(x, y);
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_MOUSEWHEEL:
+            {
+                f32 yOffset = static_cast<f32>(GET_WHEEL_DELTA_WPARAM(wParam)) / static_cast<f32>(WHEEL_DELTA);
+                MouseScrolledEvent event(0.0f, yOffset);
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_MOUSEHWHEEL:
+            {
+                f32 xOffset = static_cast<f32>(GET_WHEEL_DELTA_WPARAM(wParam)) / static_cast<f32>(WHEEL_DELTA);
+                MouseScrolledEvent event(xOffset, 0.0f);
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_LBUTTONDOWN:
+            {
+                MouseButtonPressedEvent event(static_cast<int32>(MouseCode::Left));
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_LBUTTONUP:
+            {
+                MouseButtonReleasedEvent event(static_cast<int32>(MouseCode::Left));
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_RBUTTONDOWN:
+            {
+                MouseButtonPressedEvent event(static_cast<int32>(MouseCode::Right));
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_RBUTTONUP:
+            {
+                MouseButtonReleasedEvent event(static_cast<int32>(MouseCode::Right));
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_MBUTTONDOWN:
+            {
+                MouseButtonPressedEvent event(static_cast<int32>(MouseCode::Middle));
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_MBUTTONUP:
+            {
+                MouseButtonReleasedEvent event(static_cast<int32>(MouseCode::Middle));
+                data->EventCallback(event);
+                break;
+            }
+
+            case WM_XBUTTONDOWN:
+            {
+                int32 button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1)
+                               ? static_cast<int32>(MouseCode::Button3)
+                               : static_cast<int32>(MouseCode::Button4);
+                MouseButtonPressedEvent event(button);
+                data->EventCallback(event);
+                return TRUE;  // Required for XBUTTON messages
+            }
+
+            case WM_XBUTTONUP:
+            {
+                int32 button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1)
+                               ? static_cast<int32>(MouseCode::Button3)
+                               : static_cast<int32>(MouseCode::Button4);
+                MouseButtonReleasedEvent event(button);
+                data->EventCallback(event);
+                return TRUE;  // Required for XBUTTON messages
             }
         }
 
