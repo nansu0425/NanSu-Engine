@@ -16,7 +16,7 @@ namespace NanSu
     {
     public:
         using EventHandler = std::function<void(Event&)>;
-        using HandlerId = uint64_t;
+        using HandlerId = uint64;
 
         // Lifecycle (matches Logger pattern)
         static void Initialize();

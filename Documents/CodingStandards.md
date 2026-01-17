@@ -1,7 +1,7 @@
 # NanSu Engine - Coding Standards
 
-**Version:** 1.0.0  
-**Last Updated:** 2026-01-17  
+**Version:** 1.1.0
+**Last Updated:** 2026-01-17
 **Project Type:** C++ Game Engine + Lua Game Logic
 
 ---
@@ -10,8 +10,9 @@
 
 1. [Overview](#overview)
 2. [General Principles](#general-principles)
-3. [C++ Coding Standards](#c-coding-standards)
-4. [Lua Coding Standards](#lua-coding-standards)
+3. [Type System](#type-system)
+4. [C++ Coding Standards](#c-coding-standards)
+5. [Lua Coding Standards](#lua-coding-standards)
 
 ---
 
@@ -38,6 +39,58 @@ This document defines the coding conventions for the **NanSu Engine** project. T
 - Use self-documenting code (clear naming, small functions)
 - Keep comments up-to-date with code changes
 - Document public APIs thoroughly
+
+---
+
+## Type System
+
+NanSu Engine uses custom type aliases defined in `Core/Types.h` for cross-platform compatibility and consistency. **Always use these types instead of primitive C++ types.**
+
+### Engine Type Aliases
+
+| Category | Types | Description |
+|----------|-------|-------------|
+| **Signed Integers** | `int8`, `int16`, `int32`, `int64` | Fixed-size signed integers |
+| **Unsigned Integers** | `uint8`, `uint16`, `uint32`, `uint64` | Fixed-size unsigned integers |
+| **Floating Point** | `f32`, `f64` | 32-bit and 64-bit floats |
+| **Size Types** | `usize`, `isize` | Platform-dependent size types |
+| **Byte** | `byte` | Alias for `uint8` |
+| **Pointer** | `uintptr`, `intptr` | Integer types for pointer arithmetic |
+
+### Usage Examples
+
+```cpp
+// Good: Use NanSu types
+int32 entityId = 100;
+uint32 frameCount = 0;
+f32 deltaTime = 0.016f;
+uint64 handleId = 42;
+
+// Avoid: Raw C++ types (except for standard library interfaces)
+int entityId = 100;      // Avoid
+unsigned int count = 0;  // Avoid
+float deltaTime = 0.016f; // Avoid
+```
+
+### Type Limits
+
+```cpp
+// Use NanSu::Limits for type boundaries
+if (value > NanSu::Limits::Int32Max)
+{
+    // Handle overflow
+}
+
+constexpr uint32 MAX_ENTITIES = NanSu::Limits::UInt16Max;
+```
+
+### Exceptions
+
+Use standard C++ types only when required by:
+- Standard library interfaces (e.g., `std::vector<int>` for compatibility)
+- Third-party library APIs
+- Platform-specific code
+- `main()` function signature
 
 ---
 
@@ -74,9 +127,9 @@ struct TransformComponent { };
 class Engine
 {
 private:
-    std::string m_Version;        // Member variable
-    bool m_IsInitialized;         // Member variable
-    static int s_InstanceCount;   // Static member variable
+    std::string m_Version;          // Member variable
+    bool m_IsInitialized;           // Member variable
+    static int32 s_InstanceCount;   // Static member variable
 };
 ```
 - Use **camelCase** with `m_` prefix for member variables
@@ -98,10 +151,10 @@ bool IsRunning() const;
 
 #### Constants and Enums
 ```cpp
-const int MAX_ENTITIES = 1000;
-constexpr float PI = 3.14159f;
+constexpr int32 MAX_ENTITIES = 1000;
+constexpr f32 PI = 3.14159f;
 
-enum class RenderMode
+enum class RenderMode : uint8
 {
     Wireframe,
     Solid,
@@ -114,10 +167,10 @@ enum class RenderMode
 
 #### Local Variables and Parameters
 ```cpp
-void ProcessEntity(int entityId, const std::string& entityName)
+void ProcessEntity(int32 entityId, const std::string& entityName)
 {
-    int localCounter = 0;
-    float deltaTime = 0.016f;
+    int32 localCounter = 0;
+    f32 deltaTime = 0.016f;
 }
 ```
 - Use **camelCase** for local variables and function parameters
@@ -165,7 +218,7 @@ if (condition)
 #### Spacing
 ```cpp
 // Operators
-int result = a + b * c;
+int32 result = a + b * c;
 bool check = (x > 5) && (y < 10);
 
 // Function calls
@@ -173,7 +226,7 @@ Function(arg1, arg2, arg3);
 
 // Control structures
 if (condition)
-for (int i = 0; i < count; ++i)
+for (int32 i = 0; i < count; ++i)
 while (running)
 ```
 
@@ -234,7 +287,7 @@ namespace NanSu
 Engine::Engine()
     : m_Version("1.0.0")
     , m_IsInitialized(false)
-    , m_FrameCount(0)
+    , m_FrameCount(0)   // uint64 m_FrameCount
 {
     // Constructor body
 }
@@ -332,7 +385,7 @@ void* ptr = 0;
 #### Single-Line Comments
 ```cpp
 // Use // for single-line comments
-int frameCount = 0;  // Comment after code
+int32 frameCount = 0;  // Comment after code
 ```
 
 #### Multi-Line Comments

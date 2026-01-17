@@ -11,14 +11,14 @@ namespace NanSu
     class MouseMovedEvent : public Event
     {
     public:
-        MouseMovedEvent(float x, float y)
+        MouseMovedEvent(f32 x, f32 y)
             : m_MouseX(x)
             , m_MouseY(y)
         {
         }
 
-        float GetX() const { return m_MouseX; }
-        float GetY() const { return m_MouseY; }
+        f32 GetX() const { return m_MouseX; }
+        f32 GetY() const { return m_MouseY; }
 
         std::string ToString() const override
         {
@@ -31,8 +31,8 @@ namespace NanSu
         NS_EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
 
     private:
-        float m_MouseX;
-        float m_MouseY;
+        f32 m_MouseX;
+        f32 m_MouseY;
     };
 
     /**
@@ -41,14 +41,14 @@ namespace NanSu
     class MouseScrolledEvent : public Event
     {
     public:
-        MouseScrolledEvent(float xOffset, float yOffset)
+        MouseScrolledEvent(f32 xOffset, f32 yOffset)
             : m_XOffset(xOffset)
             , m_YOffset(yOffset)
         {
         }
 
-        float GetXOffset() const { return m_XOffset; }
-        float GetYOffset() const { return m_YOffset; }
+        f32 GetXOffset() const { return m_XOffset; }
+        f32 GetYOffset() const { return m_YOffset; }
 
         std::string ToString() const override
         {
@@ -61,8 +61,8 @@ namespace NanSu
         NS_EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
 
     private:
-        float m_XOffset;
-        float m_YOffset;
+        f32 m_XOffset;
+        f32 m_YOffset;
     };
 
     /**
@@ -71,17 +71,17 @@ namespace NanSu
     class MouseButtonEvent : public Event
     {
     public:
-        int GetMouseButton() const { return m_Button; }
+        int32 GetMouseButton() const { return m_Button; }
 
         NS_EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse | EventCategoryMouseButton)
 
     protected:
-        explicit MouseButtonEvent(int button)
+        explicit MouseButtonEvent(int32 button)
             : m_Button(button)
         {
         }
 
-        int m_Button;
+        int32 m_Button;
     };
 
     /**
@@ -90,7 +90,7 @@ namespace NanSu
     class MouseButtonPressedEvent : public MouseButtonEvent
     {
     public:
-        explicit MouseButtonPressedEvent(int button)
+        explicit MouseButtonPressedEvent(int32 button)
             : MouseButtonEvent(button)
         {
         }
@@ -111,7 +111,7 @@ namespace NanSu
     class MouseButtonReleasedEvent : public MouseButtonEvent
     {
     public:
-        explicit MouseButtonReleasedEvent(int button)
+        explicit MouseButtonReleasedEvent(int32 button)
             : MouseButtonEvent(button)
         {
         }

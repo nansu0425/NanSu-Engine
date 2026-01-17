@@ -11,17 +11,17 @@ namespace NanSu
     class KeyEvent : public Event
     {
     public:
-        int GetKeyCode() const { return m_KeyCode; }
+        int32 GetKeyCode() const { return m_KeyCode; }
 
         NS_EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryKeyboard)
 
     protected:
-        explicit KeyEvent(int keyCode)
+        explicit KeyEvent(int32 keyCode)
             : m_KeyCode(keyCode)
         {
         }
 
-        int m_KeyCode;
+        int32 m_KeyCode;
     };
 
     /**
@@ -30,7 +30,7 @@ namespace NanSu
     class KeyPressedEvent : public KeyEvent
     {
     public:
-        KeyPressedEvent(int keyCode, bool isRepeat = false)
+        KeyPressedEvent(int32 keyCode, bool isRepeat = false)
             : KeyEvent(keyCode)
             , m_IsRepeat(isRepeat)
         {
@@ -57,7 +57,7 @@ namespace NanSu
     class KeyReleasedEvent : public KeyEvent
     {
     public:
-        explicit KeyReleasedEvent(int keyCode)
+        explicit KeyReleasedEvent(int32 keyCode)
             : KeyEvent(keyCode)
         {
         }
@@ -78,7 +78,7 @@ namespace NanSu
     class KeyTypedEvent : public KeyEvent
     {
     public:
-        explicit KeyTypedEvent(int keyCode)
+        explicit KeyTypedEvent(int32 keyCode)
             : KeyEvent(keyCode)
         {
         }

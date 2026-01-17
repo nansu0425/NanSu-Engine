@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Core/Types.h"
 #include <string>
-#include <cstdint>
 #include <functional>
 
 namespace NanSu
@@ -9,7 +9,7 @@ namespace NanSu
     /**
      * @brief Event type enum for runtime type identification
      */
-    enum class EventType : uint32_t
+    enum class EventType : uint32
     {
         None = 0,
 
@@ -39,7 +39,7 @@ namespace NanSu
     /**
      * @brief Event category flags for filtering (can be combined with bitwise OR)
      */
-    enum EventCategory : uint32_t
+    enum EventCategory : uint32
     {
         EventCategoryNone        = 0,
         EventCategoryApplication = 1 << 0,
@@ -57,7 +57,7 @@ namespace NanSu
         virtual const char* GetName() const override { return #type; }
 
     #define NS_EVENT_CLASS_CATEGORY(category) \
-        virtual uint32_t GetCategoryFlags() const override { return category; }
+        virtual uint32 GetCategoryFlags() const override { return category; }
 
     /**
      * @brief Base class for all events in the engine
@@ -70,7 +70,7 @@ namespace NanSu
         // Pure virtual methods for type identification
         virtual EventType GetEventType() const = 0;
         virtual const char* GetName() const = 0;
-        virtual uint32_t GetCategoryFlags() const = 0;
+        virtual uint32 GetCategoryFlags() const = 0;
 
         // Optional: String representation for debugging
         virtual std::string ToString() const { return GetName(); }
