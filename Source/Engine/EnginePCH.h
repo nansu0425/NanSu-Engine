@@ -53,9 +53,20 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 
 // -----------------------------------------------------------------------------
+// Third-Party - GLM (OpenGL Mathematics)
+// -----------------------------------------------------------------------------
+#define GLM_FORCE_LEFT_HANDED       // DirectX uses left-handed coordinate system
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE // DirectX depth range [0, 1]
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/quaternion.hpp>
+
+// -----------------------------------------------------------------------------
 // Engine Core
 // -----------------------------------------------------------------------------
 #include "Core/Types.h"
+#include "Core/Math.h"
 #include "Core/Logger.h"
 #include "Core/Assert.h"
 #include "Core/Window.h"

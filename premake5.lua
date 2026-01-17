@@ -63,7 +63,8 @@ project "Engine"
         "Source/Engine",
         "ThirdParty/spdlog/include",
         "ThirdParty/imgui",
-        "ThirdParty/imgui/backends"
+        "ThirdParty/imgui/backends",
+        "ThirdParty/glm"
     }
 
     -- ImGui 파일은 PCH 제외
@@ -97,7 +98,8 @@ project "Editor"
         "Source",
         "Source/Engine",
         "ThirdParty/spdlog/include",
-        "ThirdParty/imgui"
+        "ThirdParty/imgui",
+        "ThirdParty/glm"
     }
 
     links { "Engine" }
@@ -126,7 +128,8 @@ project "Game"
         "Source",
         "Source/Engine",
         "ThirdParty/spdlog/include",
-        "ThirdParty/imgui"
+        "ThirdParty/imgui",
+        "ThirdParty/glm"
     }
 
     links { "Engine" }
