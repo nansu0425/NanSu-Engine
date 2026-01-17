@@ -33,6 +33,9 @@ namespace NanSu
 
     EventBus::HandlerId EventBus::SubscribeToCategory(EventCategory category, EventHandler handler)
     {
+        NS_ENGINE_ASSERT(s_Initialized, "EventBus must be initialized before subscribing");
+        NS_ENGINE_ASSERT(handler != nullptr, "Event handler cannot be null");
+
         HandlerId id = s_NextHandlerId++;
         s_CategoryHandlers.push_back({ id, category, std::move(handler) });
         return id;
@@ -66,6 +69,7 @@ namespace NanSu
 
     void EventBus::Publish(Event& event)
     {
+        NS_ENGINE_ASSERT(s_Initialized, "EventBus must be initialized before publishing events");
         NS_EVENT_TRACE(event);
 
         // Dispatch to type-specific handlers

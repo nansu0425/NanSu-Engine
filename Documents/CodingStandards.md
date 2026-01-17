@@ -454,6 +454,77 @@ bool TryLoadResource(const std::string& path)
 // e.g., PlatformWindows.cpp, PlatformLinux.cpp
 ```
 
+### 9. Debug Macros
+
+NanSu Engine provides debug macros in `Core/Assert.h`. **Use these macros actively** to catch bugs early and improve code reliability.
+
+#### Assertions
+```cpp
+// Engine code: Use NS_ENGINE_ASSERT
+void EventBus::Publish(Event& event)
+{
+    NS_ENGINE_ASSERT(s_Initialized, "EventBus must be initialized");
+    NS_ENGINE_ASSERT(handler != nullptr, "Handler cannot be null");
+}
+
+// Game/Editor code: Use NS_ASSERT
+void Player::TakeDamage(int32 damage)
+{
+    NS_ASSERT(damage >= 0, "Damage cannot be negative");
+}
+```
+
+#### Verification (Always Evaluated)
+```cpp
+// NS_VERIFY: Condition is always evaluated, logs error in debug builds
+bool success = LoadResource(path);
+NS_VERIFY(success, "Failed to load resource: {}", path);
+```
+
+#### Code Markers
+```cpp
+// Mark unreachable code paths
+switch (state)
+{
+    case State::Running: break;
+    case State::Stopped: break;
+    default:
+        NS_UNREACHABLE();
+}
+
+// Mark unimplemented features
+void RenderSystem::DrawShadows()
+{
+    NS_NOT_IMPLEMENTED();
+}
+```
+
+#### Debug-Only Code
+```cpp
+// Code that only runs in debug builds
+NS_DEBUG_ONLY(
+    NS_ENGINE_INFO("Debug: Entity count = {}", entityCount);
+);
+```
+
+#### Deprecation
+```cpp
+// Mark deprecated functions
+NS_DEPRECATED("Use NewFunction() instead")
+void OldFunction();
+```
+
+#### When to Use
+
+| Macro | Use Case |
+|-------|----------|
+| `NS_ENGINE_ASSERT` | Engine code preconditions, invariants |
+| `NS_ASSERT` | Game/Editor code preconditions |
+| `NS_VERIFY` | Conditions that must be checked in release but only log in debug |
+| `NS_UNREACHABLE` | Switch default cases, impossible code paths |
+| `NS_NOT_IMPLEMENTED` | Placeholder for future implementation |
+| `NS_DEPRECATED` | Mark functions scheduled for removal |
+
 ---
 
 ## Lua Coding Standards

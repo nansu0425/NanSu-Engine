@@ -13,10 +13,12 @@ namespace NanSu
 
         // Create Engine logger (will use default colors based on log level)
         s_EngineLogger = spdlog::stdout_color_mt("ENGINE");
+        NS_ENGINE_ASSERT(s_EngineLogger != nullptr, "Failed to create Engine logger");
         s_EngineLogger->set_level(spdlog::level::trace);
 
         // Create Client logger (will use default colors based on log level)
         s_ClientLogger = spdlog::stdout_color_mt("CLIENT");
+        NS_ENGINE_ASSERT(s_ClientLogger != nullptr, "Failed to create Client logger");
         s_ClientLogger->set_level(spdlog::level::trace);
 
         NS_ENGINE_INFO("Logger initialized");
