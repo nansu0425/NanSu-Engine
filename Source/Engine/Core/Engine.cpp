@@ -1,6 +1,8 @@
 #include "EnginePCH.h"
 
 #include "Core/Engine.h"
+#include "Events/EventBus.h"
+#include "Events/ApplicationEvent.h"
 
 namespace NanSu
 {
@@ -26,6 +28,13 @@ namespace NanSu
         {
             Logger::Initialize();
             NS_ENGINE_INFO("Initializing NanSu Engine v{}", m_Version);
+
+            EventBus::Initialize();
+
+            // Publish initialization event
+            AppInitEvent initEvent;
+            EventBus::Publish(initEvent);
+
             m_IsInitialized = true;
         }
     }
@@ -35,6 +44,13 @@ namespace NanSu
         if (m_IsInitialized)
         {
             NS_ENGINE_INFO("Shutting down Engine");
+
+            // Publish shutdown event
+            AppShutdownEvent shutdownEvent;
+            EventBus::Publish(shutdownEvent);
+
+            EventBus::Shutdown();
+
             m_IsInitialized = false;
             Logger::Shutdown();
         }
