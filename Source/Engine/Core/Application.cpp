@@ -38,11 +38,25 @@ namespace NanSu
             // Skip update logic if minimized
             if (!m_Minimized)
             {
-                // Future: Layer updates, rendering, etc.
+                // Update all layers (bottom to top)
+                for (Layer* layer : m_LayerStack)
+                {
+                    layer->OnUpdate();
+                }
             }
         }
 
         NS_ENGINE_INFO("Application exiting main loop");
+    }
+
+    void Application::PushLayer(Layer* layer)
+    {
+        m_LayerStack.PushLayer(layer);
+    }
+
+    void Application::PushOverlay(Layer* overlay)
+    {
+        m_LayerStack.PushOverlay(overlay);
     }
 
     void Application::OnEvent(Event& event)
@@ -51,8 +65,13 @@ namespace NanSu
         dispatcher.Dispatch<WindowCloseEvent>(NS_BIND_EVENT_FN(Application::OnWindowClose));
         dispatcher.Dispatch<WindowResizeEvent>(NS_BIND_EVENT_FN(Application::OnWindowResize));
 
-        // Log events for debugging
-        NS_ENGINE_TRACE("{}", event.ToString());
+        // Propagate events to layers in reverse order (overlays first)
+        for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+        {
+            if (event.IsHandled())
+                break;
+            (*it)->OnEvent(event);
+        }
     }
 
     bool Application::OnWindowClose(WindowCloseEvent& event)

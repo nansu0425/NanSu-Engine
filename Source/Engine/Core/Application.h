@@ -2,6 +2,7 @@
 
 #include "Core/Types.h"
 #include "Core/Window.h"
+#include "Core/LayerStack.h"
 #include "Events/Event.h"
 #include "Events/WindowEvent.h"
 #include <memory>
@@ -34,6 +35,18 @@ namespace NanSu
         void OnEvent(Event& event);
 
         /**
+         * @brief Push a layer onto the application's layer stack
+         * @param layer The layer to push (Application takes ownership)
+         */
+        void PushLayer(Layer* layer);
+
+        /**
+         * @brief Push an overlay onto the application's layer stack
+         * @param overlay The overlay to push (Application takes ownership)
+         */
+        void PushOverlay(Layer* overlay);
+
+        /**
          * @brief Get the main window
          */
         Window& GetWindow() { return *m_Window; }
@@ -49,6 +62,7 @@ namespace NanSu
 
     private:
         std::unique_ptr<Window> m_Window;
+        LayerStack m_LayerStack;
         bool m_Running = true;
         bool m_Minimized = false;
 

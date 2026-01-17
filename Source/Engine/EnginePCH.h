@@ -59,6 +59,8 @@
 #include "Core/Logger.h"
 #include "Core/Assert.h"
 #include "Core/Window.h"
+#include "Core/Layer.h"
+#include "Core/LayerStack.h"
 
 // -----------------------------------------------------------------------------
 // Engine Input
