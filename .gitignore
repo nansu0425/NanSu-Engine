@@ -183,6 +183,13 @@ $RECYCLE.BIN/
 *.lnk
 
 #######################
+# AI Assistants
+#######################
+
+# Claude Code
+.claude/
+
+#######################
 # IDEs and Editors
 #######################
 
