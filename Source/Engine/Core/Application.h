@@ -3,6 +3,7 @@
 #include "Core/Types.h"
 #include "Core/Window.h"
 #include "Core/LayerStack.h"
+#include "Renderer/GraphicsContext.h"
 #include "Events/Event.h"
 #include "Events/WindowEvent.h"
 #include <memory>
@@ -52,6 +53,11 @@ namespace NanSu
         Window& GetWindow() { return *m_Window; }
 
         /**
+         * @brief Get the graphics context
+         */
+        GraphicsContext& GetGraphicsContext() { return *m_GraphicsContext; }
+
+        /**
          * @brief Get the singleton application instance
          */
         static Application& Get() { return *s_Instance; }
@@ -62,6 +68,7 @@ namespace NanSu
 
     private:
         std::unique_ptr<Window> m_Window;
+        std::unique_ptr<GraphicsContext> m_GraphicsContext;
         LayerStack m_LayerStack;
         bool m_Running = true;
         bool m_Minimized = false;

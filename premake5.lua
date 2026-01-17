@@ -57,6 +57,8 @@ project "Engine"
 
     buildoptions { "/utf-8" }
 
+    -- Note: DirectX 11 libraries are linked via #pragma comment(lib, ...) in DX11Context.cpp
+
 --------------------------------------------------------------------------------
 -- 2. Editor (실행 파일)
 --------------------------------------------------------------------------------
