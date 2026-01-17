@@ -299,6 +299,18 @@ test-results/
 *.trx
 
 #######################
+# ImGui
+#######################
+
+# ImGui configuration file (window positions, sizes, etc.)
+imgui.ini
+**/imgui.ini
+
+# ImGui log files
+imgui.log
+**/imgui.log
+
+#######################
 # Game Engine Specific
 #######################
 
