@@ -3,6 +3,7 @@
 #include "Core/Input.h"
 #include "Events/EventDispatcher.h"
 #include "ImGui/ImGuiLayer.h"
+#include "Renderer/Renderer.h"
 
 namespace NanSu
 {
@@ -34,6 +35,9 @@ namespace NanSu
             NS_ENGINE_CRITICAL("Failed to initialize graphics context!");
         }
 
+        // Initialize renderer
+        Renderer::Init();
+
         // Create and push ImGui overlay
         m_ImGuiLayer = new ImGuiLayer();
         PushOverlay(m_ImGuiLayer);
@@ -41,6 +45,9 @@ namespace NanSu
 
     Application::~Application()
     {
+        // Shutdown renderer before graphics context
+        Renderer::Shutdown();
+
         // Shutdown graphics context before window is destroyed
         if (m_GraphicsContext)
         {
@@ -64,7 +71,8 @@ namespace NanSu
             if (!m_Minimized)
             {
                 // Clear the screen with a dark blue color
-                m_GraphicsContext->Clear(0.1f, 0.1f, 0.4f, 1.0f);
+                RenderCommand::SetClearColor(0.1f, 0.1f, 0.4f, 1.0f);
+                RenderCommand::Clear();
 
                 // Update all layers (bottom to top)
                 for (Layer* layer : m_LayerStack)
@@ -130,6 +138,7 @@ namespace NanSu
 
         m_Minimized = false;
         m_GraphicsContext->OnResize(event.GetWidth(), event.GetHeight());
+        Renderer::OnWindowResize(event.GetWidth(), event.GetHeight());
         return false;
     }
 }

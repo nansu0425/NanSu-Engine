@@ -1,13 +1,10 @@
 #include "Core/Application.h"
 #include "Core/EntryPoint.h"
 #include "Core/Layer.h"
+#include "Renderer/Renderer.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
 #include <imgui.h>
-
-#ifdef NS_PLATFORM_WINDOWS
-#include <d3d11.h>
-#endif
 
 class EditorLayer : public NanSu::Layer
 {
@@ -57,22 +54,7 @@ public:
 
     void OnUpdate() override
     {
-        // Primitive Topology 설정 및 드로우 콜
-#ifdef NS_PLATFORM_WINDOWS
-        auto* deviceContext = static_cast<ID3D11DeviceContext*>(
-            NanSu::Application::Get().GetGraphicsContext().GetNativeDeviceContext());
-
-        // 셰이더 & 버퍼 바인딩
-        m_Shader->Bind();
-        m_VertexBuffer->Bind();
-        m_IndexBuffer->Bind();
-
-        // Triangle List로 설정
-        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-        // 드로우 콜
-        deviceContext->DrawIndexed(m_IndexBuffer->GetCount(), 0, 0);
-#endif
+        NanSu::Renderer::Submit(m_Shader, m_VertexBuffer, m_IndexBuffer);
     }
 
     void OnImGuiRender() override
