@@ -1,21 +1,21 @@
-#include "Core/Engine.h"
-#include "Core/Logger.h"
-#include <iostream>
+#include "Core/Application.h"
+#include "Core/EntryPoint.h"
 
-int main()
+class EditorApplication : public NanSu::Application
 {
-    NanSu::Engine engine;
-    engine.Initialize();
-    engine.PrintInfo();
+public:
+    EditorApplication()
+    {
+        NS_INFO("EditorApplication created");
+    }
 
-    NS_INFO("========== Editor Application ==========");
-    NS_INFO("Running editor-specific code...");
-    NS_INFO("Editor is ready!");
+    ~EditorApplication()
+    {
+        NS_INFO("EditorApplication destroyed");
+    }
+};
 
-    engine.Shutdown();
-
-    std::cout << "\n[Editor] Press Enter to exit..." << std::endl;
-    std::cin.get();
-
-    return 0;
+NanSu::Application* NanSu::CreateApplication()
+{
+    return new EditorApplication();
 }

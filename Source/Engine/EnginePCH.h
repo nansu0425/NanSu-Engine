@@ -58,6 +58,7 @@
 #include "Core/Types.h"
 #include "Core/Logger.h"
 #include "Core/Assert.h"
+#include "Core/Window.h"
 
 // -----------------------------------------------------------------------------
 // Engine Events

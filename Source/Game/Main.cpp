@@ -1,21 +1,21 @@
-#include "Core/Engine.h"
-#include "Core/Logger.h"
-#include <iostream>
+#include "Core/Application.h"
+#include "Core/EntryPoint.h"
 
-int main()
+class GameApplication : public NanSu::Application
 {
-    NanSu::Engine engine;
-    engine.Initialize();
-    engine.PrintInfo();
+public:
+    GameApplication()
+    {
+        NS_INFO("GameApplication created");
+    }
 
-    NS_INFO("========== Game Application ==========");
-    NS_INFO("Running game-specific code...");
-    NS_INFO("Game is running!");
+    ~GameApplication()
+    {
+        NS_INFO("GameApplication destroyed");
+    }
+};
 
-    engine.Shutdown();
-
-    std::cout << "\n[Game] Press Enter to exit..." << std::endl;
-    std::cin.get();
-
-    return 0;
+NanSu::Application* NanSu::CreateApplication()
+{
+    return new GameApplication();
 }
