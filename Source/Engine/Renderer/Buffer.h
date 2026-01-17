@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Types.h"
+#include "Core/Assert.h"
 
 #include <string>
 #include <vector>

@@ -164,6 +164,9 @@ namespace NanSu
 
     void DX11Context::Clear(f32 r, f32 g, f32 b, f32 a)
     {
+        // Ensure render target is bound (ImGui may have changed it)
+        m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, nullptr);
+
         f32 clearColor[4] = { r, g, b, a };
         m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, clearColor);
     }
