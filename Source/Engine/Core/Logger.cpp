@@ -1,5 +1,4 @@
-#include "Core/Logger.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
+#include "EnginePCH.h"
 
 namespace NanSu
 {

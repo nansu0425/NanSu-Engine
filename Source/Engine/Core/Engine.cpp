@@ -1,5 +1,6 @@
+#include "EnginePCH.h"
+
 #include "Core/Engine.h"
-#include "Core/Logger.h"
 
 namespace NanSu
 {

@@ -40,6 +40,10 @@ project "Engine"
     targetdir ("Binaries/" .. outputdir .. "/%{prj.name}")
     objdir ("Build/" .. outputdir .. "/%{prj.name}")
 
+    -- Precompiled Header
+    pchheader "EnginePCH.h"
+    pchsource "Source/Engine/EnginePCH.cpp"
+
     files {
         "Source/Engine/**.h",
         "Source/Engine/**.cpp"
