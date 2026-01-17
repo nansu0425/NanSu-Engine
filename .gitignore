@@ -188,6 +188,7 @@ $RECYCLE.BIN/
 
 # Claude Code
 .claude/
+CLAUDE.md
 
 #######################
 # IDEs and Editors
