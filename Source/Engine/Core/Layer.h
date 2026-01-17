@@ -54,6 +54,13 @@ namespace NanSu
         virtual void OnEvent(Event& event) {}
 
         /**
+         * @brief Called during ImGui render pass
+         * Layers can override this to render ImGui windows.
+         * Only called when ImGui is initialized.
+         */
+        virtual void OnImGuiRender() {}
+
+        /**
          * @brief Get the debug name of this layer
          * @return The layer's debug name
          */

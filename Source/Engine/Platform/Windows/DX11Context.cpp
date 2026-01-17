@@ -183,6 +183,11 @@ namespace NanSu
         }
     }
 
+    void DX11Context::BindRenderTarget()
+    {
+        m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, nullptr);
+    }
+
     void DX11Context::OnResize(uint32 width, uint32 height)
     {
         if (width == 0 || height == 0)

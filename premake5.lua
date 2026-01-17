@@ -46,14 +46,30 @@ project "Engine"
 
     files {
         "Source/Engine/**.h",
-        "Source/Engine/**.cpp"
+        "Source/Engine/**.cpp",
+        -- ImGui core
+        "ThirdParty/imgui/imgui.cpp",
+        "ThirdParty/imgui/imgui_demo.cpp",
+        "ThirdParty/imgui/imgui_draw.cpp",
+        "ThirdParty/imgui/imgui_tables.cpp",
+        "ThirdParty/imgui/imgui_widgets.cpp",
+        -- ImGui backends
+        "ThirdParty/imgui/backends/imgui_impl_win32.cpp",
+        "ThirdParty/imgui/backends/imgui_impl_dx11.cpp"
     }
 
     includedirs {
         "Source",
         "Source/Engine",
-        "ThirdParty/spdlog/include"
+        "ThirdParty/spdlog/include",
+        "ThirdParty/imgui",
+        "ThirdParty/imgui/backends"
     }
+
+    -- ImGui 파일은 PCH 제외
+    filter "files:ThirdParty/imgui/**.cpp"
+        flags { "NoPCH" }
+    filter {}
 
     buildoptions { "/utf-8" }
 
@@ -80,7 +96,8 @@ project "Editor"
     includedirs {
         "Source",
         "Source/Engine",
-        "ThirdParty/spdlog/include"
+        "ThirdParty/spdlog/include",
+        "ThirdParty/imgui"
     }
 
     links { "Engine" }
@@ -108,7 +125,8 @@ project "Game"
     includedirs {
         "Source",
         "Source/Engine",
-        "ThirdParty/spdlog/include"
+        "ThirdParty/spdlog/include",
+        "ThirdParty/imgui"
     }
 
     links { "Engine" }

@@ -10,6 +10,9 @@
 
 namespace NanSu
 {
+    // Forward declaration
+    class ImGuiLayer;
+
     /**
      * @brief Base application class
      *
@@ -70,6 +73,7 @@ namespace NanSu
         std::unique_ptr<Window> m_Window;
         std::unique_ptr<GraphicsContext> m_GraphicsContext;
         LayerStack m_LayerStack;
+        ImGuiLayer* m_ImGuiLayer = nullptr;
         bool m_Running = true;
         bool m_Minimized = false;
 

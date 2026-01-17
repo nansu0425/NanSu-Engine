@@ -73,6 +73,12 @@ namespace NanSu
         virtual void* GetNativeDeviceContext() const = 0;
 
         /**
+         * @brief Bind the main render target for rendering
+         * Should be called before any rendering operations that target the main window
+         */
+        virtual void BindRenderTarget() = 0;
+
+        /**
          * @brief Create a graphics context for the given window
          * @param windowHandle Native window handle (HWND on Windows)
          * @param width Window client width

@@ -38,6 +38,7 @@ namespace NanSu
 
         void* GetNativeDevice() const override { return m_Device; }
         void* GetNativeDeviceContext() const override { return m_DeviceContext; }
+        void BindRenderTarget() override;
 
         // DX11-specific getters (for engine internals that need typed access)
         ID3D11Device* GetDevice() const { return m_Device; }

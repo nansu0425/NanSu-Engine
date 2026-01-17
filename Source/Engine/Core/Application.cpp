@@ -2,6 +2,7 @@
 #include "Core/Application.h"
 #include "Core/Input.h"
 #include "Events/EventDispatcher.h"
+#include "ImGui/ImGuiLayer.h"
 
 namespace NanSu
 {
@@ -32,6 +33,10 @@ namespace NanSu
         {
             NS_ENGINE_CRITICAL("Failed to initialize graphics context!");
         }
+
+        // Create and push ImGui overlay
+        m_ImGuiLayer = new ImGuiLayer();
+        PushOverlay(m_ImGuiLayer);
     }
 
     Application::~Application()
@@ -66,6 +71,14 @@ namespace NanSu
                 {
                     layer->OnUpdate();
                 }
+
+                // ImGui render pass
+                m_ImGuiLayer->Begin();
+                for (Layer* layer : m_LayerStack)
+                {
+                    layer->OnImGuiRender();
+                }
+                m_ImGuiLayer->End();
 
                 // Present the frame
                 m_GraphicsContext->SwapBuffers();

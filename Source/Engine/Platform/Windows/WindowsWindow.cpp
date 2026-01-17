@@ -7,6 +7,9 @@
 #include "Input/MouseCodes.h"
 #include <windowsx.h>
 
+// Forward declare ImGui Win32 handler
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 #ifdef NS_PLATFORM_WINDOWS
 
 namespace NanSu
@@ -128,6 +131,10 @@ namespace NanSu
             SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&window->m_Data));
             return DefWindowProc(hwnd, msg, wParam, lParam);
         }
+
+        // Let ImGui process Win32 messages first
+        if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+            return true;
 
         // Get WindowData pointer from GWLP_USERDATA
         WindowData* data = reinterpret_cast<WindowData*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
