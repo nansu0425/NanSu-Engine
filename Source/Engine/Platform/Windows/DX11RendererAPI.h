@@ -4,6 +4,9 @@
 
 #ifdef NS_PLATFORM_WINDOWS
 
+// Forward declarations to avoid including DX11 headers
+struct ID3D11BlendState;
+
 namespace NanSu
 {
     /**
@@ -30,6 +33,9 @@ namespace NanSu
 
     private:
         float32 m_ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+        // DX11 pipeline states
+        ID3D11BlendState* m_BlendState = nullptr;
     };
 
 }

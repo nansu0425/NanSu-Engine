@@ -86,6 +86,29 @@ def generate_grid(width, height, grid_size=32):
                 pixels.extend([32, 32, 64, 255])   # Dark blue background
     return pixels
 
+def generate_alpha_test(width, height):
+    """Generate a texture with transparency for alpha blending test"""
+    import math
+    pixels = []
+    center_x = width / 2
+    center_y = height / 2
+    max_radius = min(center_x, center_y) * 0.8
+
+    for y in range(height):
+        for x in range(width):
+            dx = x - center_x
+            dy = y - center_y
+            distance = math.sqrt(dx * dx + dy * dy)
+
+            if distance < max_radius:
+                # Inner circle - orange with gradient alpha
+                alpha = int(255 * (1 - distance / max_radius))
+                pixels.extend([255, 165, 0, alpha])  # Orange with varying alpha
+            else:
+                # Outer area - fully transparent
+                pixels.extend([0, 0, 0, 0])
+    return pixels
+
 def main():
     # Output directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -100,6 +123,7 @@ def main():
         ('gradient.png', generate_gradient(size, size)),
         ('uv_test.png', generate_uv_test(size, size)),
         ('grid.png', generate_grid(size, size, 32)),
+        ('alpha_test.png', generate_alpha_test(size, size)),
     ]
 
     for filename, pixels in textures:

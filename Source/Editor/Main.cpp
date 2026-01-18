@@ -65,17 +65,19 @@ public:
             "../../Assets/Textures/checkerboard.png",
             "../../Assets/Textures/gradient.png",
             "../../Assets/Textures/uv_test.png",
-            "../../Assets/Textures/grid.png"
+            "../../Assets/Textures/grid.png",
+            "../../Assets/Textures/alpha_test.png"
         };
 
         const char* textureNames[] = {
             "Checkerboard",
             "Gradient",
             "UV Test",
-            "Grid"
+            "Grid",
+            "Alpha Test"
         };
 
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < 5; ++i)
         {
             NanSu::Texture2D* texture = NanSu::Texture2D::Create(texturePaths[i]);
             m_Textures.push_back(texture);
