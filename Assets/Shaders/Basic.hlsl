@@ -2,7 +2,20 @@
 // Basic Shader for NanSu Engine
 // =============================================================================
 
-// Vertex Shader Output / Pixel Shader Input
+// -----------------------------------------------------------------------------
+// Constant Buffers
+// -----------------------------------------------------------------------------
+
+// Scene constant buffer (set once per frame via Renderer::BeginScene)
+cbuffer SceneData : register(b0)
+{
+    matrix u_ViewProjection;
+};
+
+// -----------------------------------------------------------------------------
+// Vertex Shader Input/Output
+// -----------------------------------------------------------------------------
+
 struct VSOutput
 {
     float4 Position : SV_POSITION;
@@ -15,8 +28,11 @@ struct VSOutput
 VSOutput VSMain(float3 position : POSITION, float4 color : COLOR)
 {
     VSOutput output;
-    output.Position = float4(position, 1.0f);
+
+    // Transform vertex position by ViewProjection matrix
+    output.Position = mul(float4(position, 1.0f), u_ViewProjection);
     output.Color = color;
+
     return output;
 }
 

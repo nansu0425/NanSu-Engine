@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Types.h"
+#include "Core/Math.h"
 #include "Renderer/RenderCommand.h"
 
 namespace NanSu
@@ -9,6 +10,8 @@ namespace NanSu
     class Shader;
     class VertexBuffer;
     class IndexBuffer;
+    class ConstantBuffer;
+    class OrthographicCamera;
 
     /**
      * @brief High-level rendering orchestrator
@@ -21,7 +24,8 @@ namespace NanSu
      * Renderer::Init();
      *
      * // In game loop:
-     * Renderer::BeginScene();
+     * OrthographicCamera camera(-1.6f, 1.6f, -0.9f, 0.9f);
+     * Renderer::BeginScene(camera);
      * Renderer::Submit(shader, vertexBuffer, indexBuffer);
      * Renderer::EndScene();
      *
@@ -42,9 +46,12 @@ namespace NanSu
         static void Shutdown();
 
         /**
-         * @brief Begin a new scene for rendering
+         * @brief Begin a new scene for rendering with the given camera
+         * @param camera The camera providing view/projection matrices
+         *
+         * Uploads camera data to GPU constant buffer at slot b0
          */
-        static void BeginScene();
+        static void BeginScene(const OrthographicCamera& camera);
 
         /**
          * @brief End the current scene
@@ -72,6 +79,18 @@ namespace NanSu
          * @brief Get the current graphics API
          */
         static RendererAPI::API GetAPI() { return RenderCommand::GetAPI(); }
+
+    private:
+        /**
+         * @brief Scene data uploaded to GPU per-frame
+         */
+        struct SceneData
+        {
+            mat4 ViewProjectionMatrix;
+        };
+
+        static SceneData s_SceneData;
+        static ConstantBuffer* s_SceneConstantBuffer;
     };
 
 }

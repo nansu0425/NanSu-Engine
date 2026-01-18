@@ -1,44 +1,50 @@
 #include "Core/Application.h"
 #include "Core/EntryPoint.h"
 #include "Core/Layer.h"
+#include "Core/Input.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
+#include "Renderer/OrthographicCamera.h"
 #include <imgui.h>
 
 class EditorLayer : public NanSu::Layer
 {
 public:
-    EditorLayer() : Layer("EditorLayer") {}
+    EditorLayer()
+        : Layer("EditorLayer")
+        , m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)  // 16:9 aspect ratio
+    {
+    }
 
     void OnAttach() override
     {
-        // 삼각형 버텍스 데이터 (Position + Color)
+        // Triangle vertex data (Position + Color)
         float vertices[] = {
             // Position (x, y, z)      Color (r, g, b, a)
-            -0.5f, -0.5f, 0.0f,        1.0f, 0.0f, 0.0f, 1.0f,  // 좌하단 - 빨강
-             0.5f, -0.5f, 0.0f,        0.0f, 1.0f, 0.0f, 1.0f,  // 우하단 - 초록
-             0.0f,  0.5f, 0.0f,        0.0f, 0.0f, 1.0f, 1.0f   // 상단 - 파랑
+            -0.5f, -0.5f, 0.0f,        1.0f, 0.0f, 0.0f, 1.0f,  // Bottom-left - Red
+             0.5f, -0.5f, 0.0f,        0.0f, 1.0f, 0.0f, 1.0f,  // Bottom-right - Green
+             0.0f,  0.5f, 0.0f,        0.0f, 0.0f, 1.0f, 1.0f   // Top - Blue
         };
 
-        // 인덱스 데이터 (시계방향 와인딩 - D3D11 기본 앞면)
+        // Index data (clockwise winding - D3D11 default front face)
         NanSu::uint32 indices[] = { 0, 2, 1 };
 
-        // 버텍스 버퍼 생성
+        // Create vertex buffer
         m_VertexBuffer = NanSu::VertexBuffer::Create(vertices, sizeof(vertices));
         m_VertexBuffer->SetLayout({
             { NanSu::ShaderDataType::Float3, "Position" },
             { NanSu::ShaderDataType::Float4, "Color" }
         });
 
-        // 인덱스 버퍼 생성
+        // Create index buffer
         m_IndexBuffer = NanSu::IndexBuffer::Create(indices, 3);
 
-        // 셰이더 생성 (VS 작업 디렉토리 기준: Source/Editor/ → 프로젝트 루트)
+        // Create shader
         m_Shader = NanSu::Shader::Create("../../Assets/Shaders/Basic.hlsl");
         m_Shader->SetInputLayout(m_VertexBuffer->GetLayout());
 
-        NS_INFO("EditorLayer: Triangle rendering initialized");
+        NS_INFO("EditorLayer: Triangle rendering with camera initialized");
     }
 
     void OnDetach() override
@@ -54,18 +60,78 @@ public:
 
     void OnUpdate() override
     {
+        // Camera movement with keyboard input
+        NanSu::f32 speed = 0.05f;
+
+        if (NanSu::Input::IsKeyPressed(NanSu::KeyCode::A) ||
+            NanSu::Input::IsKeyPressed(NanSu::KeyCode::Left))
+        {
+            m_CameraPosition.x -= speed;
+        }
+        if (NanSu::Input::IsKeyPressed(NanSu::KeyCode::D) ||
+            NanSu::Input::IsKeyPressed(NanSu::KeyCode::Right))
+        {
+            m_CameraPosition.x += speed;
+        }
+        if (NanSu::Input::IsKeyPressed(NanSu::KeyCode::W) ||
+            NanSu::Input::IsKeyPressed(NanSu::KeyCode::Up))
+        {
+            m_CameraPosition.y += speed;
+        }
+        if (NanSu::Input::IsKeyPressed(NanSu::KeyCode::S) ||
+            NanSu::Input::IsKeyPressed(NanSu::KeyCode::Down))
+        {
+            m_CameraPosition.y -= speed;
+        }
+
+        // Camera rotation with Q/E
+        if (NanSu::Input::IsKeyPressed(NanSu::KeyCode::Q))
+        {
+            m_CameraRotation += 1.0f;
+        }
+        if (NanSu::Input::IsKeyPressed(NanSu::KeyCode::E))
+        {
+            m_CameraRotation -= 1.0f;
+        }
+
+        // Update camera transform
+        m_Camera.SetPosition(m_CameraPosition);
+        m_Camera.SetRotation(m_CameraRotation);
+
+        // Render scene with camera
+        NanSu::Renderer::BeginScene(m_Camera);
         NanSu::Renderer::Submit(m_Shader, m_VertexBuffer, m_IndexBuffer);
+        NanSu::Renderer::EndScene();
     }
 
     void OnImGuiRender() override
     {
-        // ImGui Demo Window 표시
-        static bool showDemo = true;
-        if (showDemo)
-            ImGui::ShowDemoWindow(&showDemo);
+        // Camera debug window
+        ImGui::Begin("Camera Controls");
+
+        ImGui::Text("Position: (%.2f, %.2f, %.2f)",
+                    m_CameraPosition.x, m_CameraPosition.y, m_CameraPosition.z);
+        ImGui::Text("Rotation: %.2f degrees", m_CameraRotation);
+
+        ImGui::Separator();
+        ImGui::Text("Controls:");
+        ImGui::BulletText("WASD / Arrows: Move camera");
+        ImGui::BulletText("Q/E: Rotate camera");
+
+        if (ImGui::Button("Reset Camera"))
+        {
+            m_CameraPosition = { 0.0f, 0.0f, 0.0f };
+            m_CameraRotation = 0.0f;
+        }
+
+        ImGui::End();
     }
 
 private:
+    NanSu::OrthographicCamera m_Camera;
+    NanSu::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
+    NanSu::f32 m_CameraRotation = 0.0f;
+
     NanSu::Shader* m_Shader = nullptr;
     NanSu::VertexBuffer* m_VertexBuffer = nullptr;
     NanSu::IndexBuffer* m_IndexBuffer = nullptr;
