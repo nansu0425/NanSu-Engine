@@ -5,8 +5,11 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
+#include "Renderer/Texture.h"
 #include "Renderer/OrthographicCamera.h"
 #include <imgui.h>
+#include <vector>
+#include <string>
 
 class EditorLayer : public NanSu::Layer
 {
@@ -19,36 +22,79 @@ public:
 
     void OnAttach() override
     {
-        // Triangle vertex data (Position + Color)
+        // Quad vertex data (Position + Color + TexCoord)
         float vertices[] = {
-            // Position (x, y, z)      Color (r, g, b, a)
-            -0.5f, -0.5f, 0.0f,        1.0f, 0.0f, 0.0f, 1.0f,  // Bottom-left - Red
-             0.5f, -0.5f, 0.0f,        0.0f, 1.0f, 0.0f, 1.0f,  // Bottom-right - Green
-             0.0f,  0.5f, 0.0f,        0.0f, 0.0f, 1.0f, 1.0f   // Top - Blue
+            // Position (x, y, z)      Color (r, g, b, a)            TexCoord (u, v)
+            -0.5f, -0.5f, 0.0f,        1.0f, 1.0f, 1.0f, 1.0f,       0.0f, 0.0f,  // Bottom-left
+             0.5f, -0.5f, 0.0f,        1.0f, 1.0f, 1.0f, 1.0f,       1.0f, 0.0f,  // Bottom-right
+             0.5f,  0.5f, 0.0f,        1.0f, 1.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top-right
+            -0.5f,  0.5f, 0.0f,        1.0f, 1.0f, 1.0f, 1.0f,       0.0f, 1.0f   // Top-left
         };
 
-        // Index data (clockwise winding - D3D11 default front face)
-        NanSu::uint32 indices[] = { 0, 2, 1 };
+        // Index data for two triangles forming a quad (clockwise winding)
+        NanSu::uint32 indices[] = {
+            0, 2, 1,  // First triangle
+            0, 3, 2   // Second triangle
+        };
 
         // Create vertex buffer
         m_VertexBuffer = NanSu::VertexBuffer::Create(vertices, sizeof(vertices));
         m_VertexBuffer->SetLayout({
             { NanSu::ShaderDataType::Float3, "Position" },
-            { NanSu::ShaderDataType::Float4, "Color" }
+            { NanSu::ShaderDataType::Float4, "Color" },
+            { NanSu::ShaderDataType::Float2, "TexCoord" }
         });
 
         // Create index buffer
-        m_IndexBuffer = NanSu::IndexBuffer::Create(indices, 3);
+        m_IndexBuffer = NanSu::IndexBuffer::Create(indices, 6);
 
         // Create shader
         m_Shader = NanSu::Shader::Create("../../Assets/Shaders/Basic.hlsl");
         m_Shader->SetInputLayout(m_VertexBuffer->GetLayout());
 
-        NS_INFO("EditorLayer: Triangle rendering with camera initialized");
+        // Load all test textures
+        LoadTextures();
+
+        NS_INFO("EditorLayer: Textured quad rendering initialized");
+    }
+
+    void LoadTextures()
+    {
+        // List of textures to load
+        const char* texturePaths[] = {
+            "../../Assets/Textures/checkerboard.png",
+            "../../Assets/Textures/gradient.png",
+            "../../Assets/Textures/uv_test.png",
+            "../../Assets/Textures/grid.png"
+        };
+
+        const char* textureNames[] = {
+            "Checkerboard",
+            "Gradient",
+            "UV Test",
+            "Grid"
+        };
+
+        for (int i = 0; i < 4; ++i)
+        {
+            NanSu::Texture2D* texture = NanSu::Texture2D::Create(texturePaths[i]);
+            m_Textures.push_back(texture);
+            m_TextureNames.push_back(textureNames[i]);
+        }
+
+        m_CurrentTextureIndex = 0;
     }
 
     void OnDetach() override
     {
+        // Delete all textures
+        for (auto* texture : m_Textures)
+        {
+            delete texture;
+        }
+        m_Textures.clear();
+        m_TextureNames.clear();
+
         delete m_Shader;
         delete m_IndexBuffer;
         delete m_VertexBuffer;
@@ -100,15 +146,45 @@ public:
 
         // Render scene with camera
         NanSu::Renderer::BeginScene(m_Camera);
-        NanSu::Renderer::Submit(m_Shader, m_VertexBuffer, m_IndexBuffer);
+        NanSu::Texture2D* currentTexture = m_Textures.empty() ? nullptr : m_Textures[m_CurrentTextureIndex];
+        NanSu::Renderer::Submit(m_Shader, m_VertexBuffer, m_IndexBuffer, currentTexture);
         NanSu::Renderer::EndScene();
     }
 
     void OnImGuiRender() override
     {
-        // Camera debug window
-        ImGui::Begin("Camera Controls");
+        ImGui::Begin("Controls");
 
+        // Texture selection dropdown
+        ImGui::Text("Texture Selection");
+        if (ImGui::BeginCombo("Texture", m_TextureNames[m_CurrentTextureIndex].c_str()))
+        {
+            for (int i = 0; i < static_cast<int>(m_TextureNames.size()); ++i)
+            {
+                bool isSelected = (m_CurrentTextureIndex == i);
+                if (ImGui::Selectable(m_TextureNames[i].c_str(), isSelected))
+                {
+                    m_CurrentTextureIndex = i;
+                }
+                if (isSelected)
+                {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+            ImGui::EndCombo();
+        }
+
+        // Current texture info
+        if (!m_Textures.empty() && m_Textures[m_CurrentTextureIndex])
+        {
+            NanSu::Texture2D* tex = m_Textures[m_CurrentTextureIndex];
+            ImGui::Text("Size: %dx%d", tex->GetWidth(), tex->GetHeight());
+        }
+
+        ImGui::Separator();
+
+        // Camera controls
+        ImGui::Text("Camera");
         ImGui::Text("Position: (%.2f, %.2f, %.2f)",
                     m_CameraPosition.x, m_CameraPosition.y, m_CameraPosition.z);
         ImGui::Text("Rotation: %.2f degrees", m_CameraRotation);
@@ -135,6 +211,11 @@ private:
     NanSu::Shader* m_Shader = nullptr;
     NanSu::VertexBuffer* m_VertexBuffer = nullptr;
     NanSu::IndexBuffer* m_IndexBuffer = nullptr;
+
+    // Texture management
+    std::vector<NanSu::Texture2D*> m_Textures;
+    std::vector<std::string> m_TextureNames;
+    int m_CurrentTextureIndex = 0;
 };
 
 class EditorApplication : public NanSu::Application

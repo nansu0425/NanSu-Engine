@@ -12,6 +12,7 @@ namespace NanSu
     class IndexBuffer;
     class ConstantBuffer;
     class OrthographicCamera;
+    class Texture2D;
 
     /**
      * @brief High-level rendering orchestrator
@@ -69,6 +70,18 @@ namespace NanSu
                            IndexBuffer* indexBuffer);
 
         /**
+         * @brief Submit a textured draw call for rendering
+         * @param shader The shader to use for rendering
+         * @param vertexBuffer The vertex buffer containing geometry
+         * @param indexBuffer The index buffer containing indices
+         * @param texture The texture to bind (slot t0)
+         */
+        static void Submit(Shader* shader,
+                           VertexBuffer* vertexBuffer,
+                           IndexBuffer* indexBuffer,
+                           Texture2D* texture);
+
+        /**
          * @brief Handle window resize
          * @param width New window width
          * @param height New window height
@@ -91,6 +104,7 @@ namespace NanSu
 
         static SceneData s_SceneData;
         static ConstantBuffer* s_SceneConstantBuffer;
+        static Texture2D* s_WhiteTexture;  // 1x1 white fallback texture
     };
 
 }
