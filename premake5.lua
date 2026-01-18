@@ -64,11 +64,17 @@ project "Engine"
         "ThirdParty/spdlog/include",
         "ThirdParty/imgui",
         "ThirdParty/imgui/backends",
-        "ThirdParty/glm"
+        "ThirdParty/glm",
+        "ThirdParty/stb"
     }
 
     -- ImGui 파일은 PCH 제외
     filter "files:ThirdParty/imgui/**.cpp"
+        flags { "NoPCH" }
+    filter {}
+
+    -- stb 구현 파일은 PCH 제외
+    filter "files:Source/Engine/ThirdParty/**.cpp"
         flags { "NoPCH" }
     filter {}
 
