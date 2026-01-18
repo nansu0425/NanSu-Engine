@@ -16,11 +16,18 @@ namespace NanSu
     {
     public:
         /**
-         * @brief Create a vertex buffer with the given data
+         * @brief Create a static vertex buffer with the given data (immutable)
          * @param vertices Pointer to vertex data
          * @param size Size of vertex data in bytes
          */
         DX11VertexBuffer(const void* vertices, uint32 size);
+
+        /**
+         * @brief Create a dynamic vertex buffer that can be updated
+         * @param size Maximum size of buffer in bytes
+         */
+        DX11VertexBuffer(uint32 size);
+
         ~DX11VertexBuffer();
 
         void Bind() const override;
@@ -29,9 +36,13 @@ namespace NanSu
         void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
         const BufferLayout& GetLayout() const override { return m_Layout; }
 
+        void SetData(const void* data, uint32 size) override;
+
     private:
         ID3D11Buffer* m_Buffer = nullptr;
         BufferLayout m_Layout;
+        uint32 m_Size = 0;
+        bool m_IsDynamic = false;
     };
 
     /**

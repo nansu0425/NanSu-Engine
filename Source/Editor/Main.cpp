@@ -3,6 +3,7 @@
 #include "Core/Layer.h"
 #include "Core/Input.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Renderer2D.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
 #include "Renderer/Texture.h"
@@ -55,6 +56,9 @@ public:
         // Load all test textures
         LoadTextures();
 
+        // Initialize Renderer2D
+        NanSu::Renderer2D::Init();
+
         NS_INFO("EditorLayer: Textured quad rendering initialized");
     }
 
@@ -89,6 +93,9 @@ public:
 
     void OnDetach() override
     {
+        // Shutdown Renderer2D
+        NanSu::Renderer2D::Shutdown();
+
         // Delete all textures
         for (auto* texture : m_Textures)
         {
@@ -146,11 +153,45 @@ public:
         m_Camera.SetPosition(m_CameraPosition);
         m_Camera.SetRotation(m_CameraRotation);
 
-        // Render scene with camera
-        NanSu::Renderer::BeginScene(m_Camera);
+        // Update rotation for animated quad
+        m_QuadRotation += 0.01f;
+
+        // =========================================================================
+        // Renderer2D Test
+        // =========================================================================
+        NanSu::Renderer2D::BeginScene(m_Camera);
+
+        // Background quad (large, behind everything)
+        NanSu::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 5.0f, 5.0f },
+            { 0.2f, 0.2f, 0.3f, 1.0f });
+
+        // Color-only quads (testing single shader strategy)
+        NanSu::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.5f, 0.5f },
+            { 1.0f, 0.0f, 0.0f, 1.0f });  // Red
+        NanSu::Renderer2D::DrawQuad({ -0.5f, 0.0f }, { 0.5f, 0.5f },
+            { 0.0f, 1.0f, 0.0f, 1.0f });  // Green
+        NanSu::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 0.5f, 0.5f },
+            { 0.0f, 0.0f, 1.0f, 1.0f });  // Blue
+
+        // Textured quad
         NanSu::Texture2D* currentTexture = m_Textures.empty() ? nullptr : m_Textures[m_CurrentTextureIndex];
-        NanSu::Renderer::Submit(m_Shader, m_VertexBuffer, m_IndexBuffer, currentTexture);
-        NanSu::Renderer::EndScene();
+        if (currentTexture)
+        {
+            NanSu::Renderer2D::DrawQuad({ 0.8f, 0.0f }, { 0.8f, 0.8f }, currentTexture);
+        }
+
+        // Rotated quad (animated)
+        NanSu::Renderer2D::DrawRotatedQuad({ 0.0f, 0.8f }, { 0.4f, 0.4f },
+            m_QuadRotation, { 1.0f, 1.0f, 0.0f, 1.0f });  // Yellow, rotating
+
+        // Textured quad with tint
+        if (currentTexture)
+        {
+            NanSu::Renderer2D::DrawQuad({ -0.8f, 0.8f }, { 0.6f, 0.6f },
+                currentTexture, { 1.0f, 0.5f, 0.5f, 1.0f });  // Red tint
+        }
+
+        NanSu::Renderer2D::EndScene();
     }
 
     void OnImGuiRender() override
@@ -218,6 +259,9 @@ private:
     std::vector<NanSu::Texture2D*> m_Textures;
     std::vector<std::string> m_TextureNames;
     int m_CurrentTextureIndex = 0;
+
+    // Renderer2D test
+    NanSu::float32 m_QuadRotation = 0.0f;
 };
 
 class EditorApplication : public NanSu::Application

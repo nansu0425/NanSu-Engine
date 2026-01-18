@@ -208,12 +208,26 @@ namespace NanSu
         virtual const BufferLayout& GetLayout() const = 0;
 
         /**
-         * @brief Create a vertex buffer with the given data
+         * @brief Update buffer data (only for dynamic buffers)
+         * @param data Pointer to new vertex data
+         * @param size Size of data in bytes
+         */
+        virtual void SetData(const void* data, uint32 size) = 0;
+
+        /**
+         * @brief Create a vertex buffer with the given data (static/immutable)
          * @param vertices Pointer to vertex data
          * @param size Size of vertex data in bytes
          * @return Pointer to the created buffer (caller owns memory)
          */
         static VertexBuffer* Create(const void* vertices, uint32 size);
+
+        /**
+         * @brief Create a dynamic vertex buffer that can be updated
+         * @param size Maximum size of buffer in bytes
+         * @return Pointer to the created buffer (caller owns memory)
+         */
+        static VertexBuffer* CreateDynamic(uint32 size);
 
     protected:
         VertexBuffer() = default;

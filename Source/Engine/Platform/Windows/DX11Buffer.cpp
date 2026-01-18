@@ -18,6 +18,11 @@ namespace NanSu
         return new DX11VertexBuffer(vertices, size);
     }
 
+    VertexBuffer* VertexBuffer::CreateDynamic(uint32 size)
+    {
+        return new DX11VertexBuffer(size);
+    }
+
     IndexBuffer* IndexBuffer::Create(const uint32* indices, uint32 count)
     {
         return new DX11IndexBuffer(indices, count);
@@ -28,6 +33,8 @@ namespace NanSu
     // =========================================================================
 
     DX11VertexBuffer::DX11VertexBuffer(const void* vertices, uint32 size)
+        : m_Size(size)
+        , m_IsDynamic(false)
     {
         auto* device = static_cast<ID3D11Device*>(
             Application::Get().GetGraphicsContext().GetNativeDevice());
@@ -44,7 +51,26 @@ namespace NanSu
         HRESULT hr = device->CreateBuffer(&bufferDesc, &initData, &m_Buffer);
         NS_ENGINE_ASSERT(SUCCEEDED(hr), "Failed to create vertex buffer");
 
-        NS_ENGINE_INFO("Vertex buffer created (size: {} bytes)", size);
+        NS_ENGINE_INFO("Static vertex buffer created (size: {} bytes)", size);
+    }
+
+    DX11VertexBuffer::DX11VertexBuffer(uint32 size)
+        : m_Size(size)
+        , m_IsDynamic(true)
+    {
+        auto* device = static_cast<ID3D11Device*>(
+            Application::Get().GetGraphicsContext().GetNativeDevice());
+
+        D3D11_BUFFER_DESC bufferDesc = {};
+        bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+        bufferDesc.ByteWidth = size;
+        bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+        HRESULT hr = device->CreateBuffer(&bufferDesc, nullptr, &m_Buffer);
+        NS_ENGINE_ASSERT(SUCCEEDED(hr), "Failed to create dynamic vertex buffer");
+
+        NS_ENGINE_INFO("Dynamic vertex buffer created (size: {} bytes)", size);
     }
 
     DX11VertexBuffer::~DX11VertexBuffer()
@@ -75,6 +101,23 @@ namespace NanSu
         UINT stride = 0;
         UINT offset = 0;
         deviceContext->IASetVertexBuffers(0, 1, &nullBuffer, &stride, &offset);
+    }
+
+    void DX11VertexBuffer::SetData(const void* data, uint32 size)
+    {
+        NS_ENGINE_ASSERT(m_IsDynamic, "Cannot update static vertex buffer");
+        NS_ENGINE_ASSERT(size <= m_Size, "Data size exceeds buffer capacity");
+
+        auto* deviceContext = static_cast<ID3D11DeviceContext*>(
+            Application::Get().GetGraphicsContext().GetNativeDeviceContext());
+
+        D3D11_MAPPED_SUBRESOURCE mappedResource = {};
+        HRESULT hr = deviceContext->Map(m_Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+        NS_ENGINE_ASSERT(SUCCEEDED(hr), "Failed to map vertex buffer");
+
+        memcpy(mappedResource.pData, data, size);
+
+        deviceContext->Unmap(m_Buffer, 0);
     }
 
     // =========================================================================
