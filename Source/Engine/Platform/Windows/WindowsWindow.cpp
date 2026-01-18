@@ -236,8 +236,8 @@ namespace NanSu
             // =================================================================
             case WM_MOUSEMOVE:
             {
-                f32 x = static_cast<f32>(GET_X_LPARAM(lParam));
-                f32 y = static_cast<f32>(GET_Y_LPARAM(lParam));
+                float32 x = static_cast<float32>(GET_X_LPARAM(lParam));
+                float32 y = static_cast<float32>(GET_Y_LPARAM(lParam));
                 MouseMovedEvent event(x, y);
                 data->EventCallback(event);
                 break;
@@ -245,7 +245,7 @@ namespace NanSu
 
             case WM_MOUSEWHEEL:
             {
-                f32 yOffset = static_cast<f32>(GET_WHEEL_DELTA_WPARAM(wParam)) / static_cast<f32>(WHEEL_DELTA);
+                float32 yOffset = static_cast<float32>(GET_WHEEL_DELTA_WPARAM(wParam)) / static_cast<float32>(WHEEL_DELTA);
                 MouseScrolledEvent event(0.0f, yOffset);
                 data->EventCallback(event);
                 break;
@@ -253,7 +253,7 @@ namespace NanSu
 
             case WM_MOUSEHWHEEL:
             {
-                f32 xOffset = static_cast<f32>(GET_WHEEL_DELTA_WPARAM(wParam)) / static_cast<f32>(WHEEL_DELTA);
+                float32 xOffset = static_cast<float32>(GET_WHEEL_DELTA_WPARAM(wParam)) / static_cast<float32>(WHEEL_DELTA);
                 MouseScrolledEvent event(xOffset, 0.0f);
                 data->EventCallback(event);
                 break;

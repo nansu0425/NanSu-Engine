@@ -22,14 +22,14 @@ namespace NanSu
         void Shutdown() override;
 
         void SetViewport(uint32 x, uint32 y, uint32 width, uint32 height) override;
-        void SetClearColor(f32 r, f32 g, f32 b, f32 a = 1.0f) override;
+        void SetClearColor(float32 r, float32 g, float32 b, float32 a = 1.0f) override;
         void Clear() override;
         void SetPrimitiveTopology(PrimitiveTopology topology) override;
         void BindRenderTarget() override;
         void DrawIndexed(const IndexBuffer* indexBuffer, uint32 indexCount = 0) override;
 
     private:
-        f32 m_ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        float32 m_ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
     };
 
 }

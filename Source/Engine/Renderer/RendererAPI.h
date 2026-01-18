@@ -77,7 +77,7 @@ namespace NanSu
          * @param b Blue component (0.0 - 1.0)
          * @param a Alpha component (0.0 - 1.0)
          */
-        virtual void SetClearColor(f32 r, f32 g, f32 b, f32 a = 1.0f) = 0;
+        virtual void SetClearColor(float32 r, float32 g, float32 b, float32 a = 1.0f) = 0;
 
         /**
          * @brief Clear the currently bound render target

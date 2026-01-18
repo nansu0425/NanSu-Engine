@@ -69,17 +69,17 @@ namespace NanSu
             Application::Get().GetGraphicsContext().GetNativeDeviceContext());
 
         D3D11_VIEWPORT viewport = {};
-        viewport.TopLeftX = static_cast<f32>(x);
-        viewport.TopLeftY = static_cast<f32>(y);
-        viewport.Width = static_cast<f32>(width);
-        viewport.Height = static_cast<f32>(height);
+        viewport.TopLeftX = static_cast<float32>(x);
+        viewport.TopLeftY = static_cast<float32>(y);
+        viewport.Width = static_cast<float32>(width);
+        viewport.Height = static_cast<float32>(height);
         viewport.MinDepth = 0.0f;
         viewport.MaxDepth = 1.0f;
 
         deviceContext->RSSetViewports(1, &viewport);
     }
 
-    void DX11RendererAPI::SetClearColor(f32 r, f32 g, f32 b, f32 a)
+    void DX11RendererAPI::SetClearColor(float32 r, float32 g, float32 b, float32 a)
     {
         m_ClearColor[0] = r;
         m_ClearColor[1] = g;

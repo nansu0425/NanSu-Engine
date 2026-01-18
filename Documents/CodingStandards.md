@@ -52,7 +52,7 @@ NanSu Engine uses custom type aliases defined in `Core/Types.h` for cross-platfo
 |----------|-------|-------------|
 | **Signed Integers** | `int8`, `int16`, `int32`, `int64` | Fixed-size signed integers |
 | **Unsigned Integers** | `uint8`, `uint16`, `uint32`, `uint64` | Fixed-size unsigned integers |
-| **Floating Point** | `f32`, `f64` | 32-bit and 64-bit floats |
+| **Floating Point** | `float32`, `float64` | 32-bit and 64-bit floats |
 | **Size Types** | `usize`, `isize` | Platform-dependent size types |
 | **Byte** | `byte` | Alias for `uint8` |
 | **Pointer** | `uintptr`, `intptr` | Integer types for pointer arithmetic |
@@ -63,7 +63,7 @@ NanSu Engine uses custom type aliases defined in `Core/Types.h` for cross-platfo
 // Good: Use NanSu types
 int32 entityId = 100;
 uint32 frameCount = 0;
-f32 deltaTime = 0.016f;
+float32 deltaTime = 0.016f;
 uint64 handleId = 42;
 
 // Avoid: Raw C++ types (except for standard library interfaces)
@@ -152,7 +152,7 @@ bool IsRunning() const;
 #### Constants and Enums
 ```cpp
 constexpr int32 MAX_ENTITIES = 1000;
-constexpr f32 PI = 3.14159f;
+constexpr float32 PI = 3.14159f;
 
 enum class RenderMode : uint8
 {
@@ -170,7 +170,7 @@ enum class RenderMode : uint8
 void ProcessEntity(int32 entityId, const std::string& entityName)
 {
     int32 localCounter = 0;
-    f32 deltaTime = 0.016f;
+    float32 deltaTime = 0.016f;
 }
 ```
 - Use **camelCase** for local variables and function parameters

@@ -17,18 +17,18 @@ namespace NanSu
         return s_Instance->IsMouseButtonPressedImpl(button);
     }
 
-    std::pair<f32, f32> Input::GetMousePosition()
+    std::pair<float32, float32> Input::GetMousePosition()
     {
         NS_ENGINE_ASSERT(s_Instance, "Input system not initialized");
         return s_Instance->GetMousePositionImpl();
     }
 
-    f32 Input::GetMouseX()
+    float32 Input::GetMouseX()
     {
         return GetMousePosition().first;
     }
 
-    f32 Input::GetMouseY()
+    float32 Input::GetMouseY()
     {
         return GetMousePosition().second;
     }

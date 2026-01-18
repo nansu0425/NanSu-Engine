@@ -40,7 +40,7 @@ namespace NanSu
          *
          * Near/far planes default to -1.0f and 1.0f respectively
          */
-        OrthographicCamera(f32 left, f32 right, f32 bottom, f32 top);
+        OrthographicCamera(float32 left, float32 right, float32 bottom, float32 top);
 
         /**
          * @brief Set the projection bounds (useful for zoom/resize)
@@ -49,7 +49,7 @@ namespace NanSu
          * @param bottom Bottom boundary
          * @param top Top boundary
          */
-        void SetProjection(f32 left, f32 right, f32 bottom, f32 top);
+        void SetProjection(float32 left, float32 right, float32 bottom, float32 top);
 
         /**
          * @brief Get the camera position in world space
@@ -67,13 +67,13 @@ namespace NanSu
          * @brief Get the camera rotation around Z-axis
          * @return Rotation in degrees
          */
-        f32 GetRotation() const { return m_Rotation; }
+        float32 GetRotation() const { return m_Rotation; }
 
         /**
          * @brief Set the camera rotation around Z-axis
          * @param rotation Rotation in degrees
          */
-        void SetRotation(f32 rotation);
+        void SetRotation(float32 rotation);
 
         /**
          * @brief Get the projection matrix
@@ -105,7 +105,7 @@ namespace NanSu
         mat4 m_ViewProjectionMatrix;
 
         vec3 m_Position = { 0.0f, 0.0f, 0.0f };
-        f32 m_Rotation = 0.0f;  // Degrees, around Z-axis
+        float32 m_Rotation = 0.0f;  // Degrees, around Z-axis
     };
 
 }

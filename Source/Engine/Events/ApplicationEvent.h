@@ -35,12 +35,12 @@ namespace NanSu
     class AppUpdateEvent : public Event
     {
     public:
-        explicit AppUpdateEvent(f32 deltaTime)
+        explicit AppUpdateEvent(float32 deltaTime)
             : m_DeltaTime(deltaTime)
         {
         }
 
-        f32 GetDeltaTime() const { return m_DeltaTime; }
+        float32 GetDeltaTime() const { return m_DeltaTime; }
 
         std::string ToString() const override
         {
@@ -53,6 +53,6 @@ namespace NanSu
         NS_EVENT_CLASS_CATEGORY(EventCategoryApplication)
 
     private:
-        f32 m_DeltaTime;
+        float32 m_DeltaTime;
     };
 }

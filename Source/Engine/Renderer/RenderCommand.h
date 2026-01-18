@@ -51,7 +51,7 @@ namespace NanSu
         /**
          * @brief Set the clear color for subsequent Clear() calls
          */
-        static void SetClearColor(f32 r, f32 g, f32 b, f32 a = 1.0f)
+        static void SetClearColor(float32 r, float32 g, float32 b, float32 a = 1.0f)
         {
             s_RendererAPI->SetClearColor(r, g, b, a);
         }

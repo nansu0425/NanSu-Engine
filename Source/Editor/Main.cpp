@@ -61,7 +61,7 @@ public:
     void OnUpdate() override
     {
         // Camera movement with keyboard input
-        NanSu::f32 speed = 0.05f;
+        NanSu::float32 speed = 0.05f;
 
         if (NanSu::Input::IsKeyPressed(NanSu::KeyCode::A) ||
             NanSu::Input::IsKeyPressed(NanSu::KeyCode::Left))
@@ -130,7 +130,7 @@ public:
 private:
     NanSu::OrthographicCamera m_Camera;
     NanSu::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-    NanSu::f32 m_CameraRotation = 0.0f;
+    NanSu::float32 m_CameraRotation = 0.0f;
 
     NanSu::Shader* m_Shader = nullptr;
     NanSu::VertexBuffer* m_VertexBuffer = nullptr;

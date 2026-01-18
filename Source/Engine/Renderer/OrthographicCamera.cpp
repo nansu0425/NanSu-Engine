@@ -3,14 +3,14 @@
 
 namespace NanSu
 {
-    OrthographicCamera::OrthographicCamera(f32 left, f32 right, f32 bottom, f32 top)
+    OrthographicCamera::OrthographicCamera(float32 left, float32 right, float32 bottom, float32 top)
         : m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f))
         , m_ViewMatrix(1.0f)  // Identity matrix
     {
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
-    void OrthographicCamera::SetProjection(f32 left, f32 right, f32 bottom, f32 top)
+    void OrthographicCamera::SetProjection(float32 left, float32 right, float32 bottom, float32 top)
     {
         m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
@@ -22,7 +22,7 @@ namespace NanSu
         RecalculateViewMatrix();
     }
 
-    void OrthographicCamera::SetRotation(f32 rotation)
+    void OrthographicCamera::SetRotation(float32 rotation)
     {
         m_Rotation = rotation;
         RecalculateViewMatrix();

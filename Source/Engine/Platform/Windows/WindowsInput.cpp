@@ -45,7 +45,7 @@ namespace NanSu
         return (state & 0x8000) != 0;
     }
 
-    std::pair<f32, f32> WindowsInput::GetMousePositionImpl()
+    std::pair<float32, float32> WindowsInput::GetMousePositionImpl()
     {
         POINT pt;
         GetCursorPos(&pt);
@@ -57,7 +57,7 @@ namespace NanSu
             ScreenToClient(hwnd, &pt);
         }
 
-        return { static_cast<f32>(pt.x), static_cast<f32>(pt.y) };
+        return { static_cast<float32>(pt.x), static_cast<float32>(pt.y) };
     }
 }
 

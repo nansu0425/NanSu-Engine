@@ -47,19 +47,19 @@ namespace NanSu
          * @brief Get the current mouse position in client coordinates
          * @return Pair of (x, y) coordinates
          */
-        static std::pair<f32, f32> GetMousePosition();
+        static std::pair<float32, float32> GetMousePosition();
 
         /**
          * @brief Get the current mouse X position in client coordinates
          * @return X coordinate
          */
-        static f32 GetMouseX();
+        static float32 GetMouseX();
 
         /**
          * @brief Get the current mouse Y position in client coordinates
          * @return Y coordinate
          */
-        static f32 GetMouseY();
+        static float32 GetMouseY();
 
         /**
          * @brief Initialize the input system
@@ -78,7 +78,7 @@ namespace NanSu
         // Platform-specific implementation methods
         virtual bool IsKeyPressedImpl(KeyCode key) = 0;
         virtual bool IsMouseButtonPressedImpl(MouseCode button) = 0;
-        virtual std::pair<f32, f32> GetMousePositionImpl() = 0;
+        virtual std::pair<float32, float32> GetMousePositionImpl() = 0;
 
     private:
         static std::unique_ptr<Input> s_Instance;

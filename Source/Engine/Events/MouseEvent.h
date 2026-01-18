@@ -11,14 +11,14 @@ namespace NanSu
     class MouseMovedEvent : public Event
     {
     public:
-        MouseMovedEvent(f32 x, f32 y)
+        MouseMovedEvent(float32 x, float32 y)
             : m_MouseX(x)
             , m_MouseY(y)
         {
         }
 
-        f32 GetX() const { return m_MouseX; }
-        f32 GetY() const { return m_MouseY; }
+        float32 GetX() const { return m_MouseX; }
+        float32 GetY() const { return m_MouseY; }
 
         std::string ToString() const override
         {
@@ -31,8 +31,8 @@ namespace NanSu
         NS_EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
 
     private:
-        f32 m_MouseX;
-        f32 m_MouseY;
+        float32 m_MouseX;
+        float32 m_MouseY;
     };
 
     /**
@@ -41,14 +41,14 @@ namespace NanSu
     class MouseScrolledEvent : public Event
     {
     public:
-        MouseScrolledEvent(f32 xOffset, f32 yOffset)
+        MouseScrolledEvent(float32 xOffset, float32 yOffset)
             : m_XOffset(xOffset)
             , m_YOffset(yOffset)
         {
         }
 
-        f32 GetXOffset() const { return m_XOffset; }
-        f32 GetYOffset() const { return m_YOffset; }
+        float32 GetXOffset() const { return m_XOffset; }
+        float32 GetYOffset() const { return m_YOffset; }
 
         std::string ToString() const override
         {
@@ -61,8 +61,8 @@ namespace NanSu
         NS_EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
 
     private:
-        f32 m_XOffset;
-        f32 m_YOffset;
+        float32 m_XOffset;
+        float32 m_YOffset;
     };
 
     /**

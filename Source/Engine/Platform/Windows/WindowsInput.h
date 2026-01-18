@@ -21,7 +21,7 @@ namespace NanSu
     protected:
         bool IsKeyPressedImpl(KeyCode key) override;
         bool IsMouseButtonPressedImpl(MouseCode button) override;
-        std::pair<f32, f32> GetMousePositionImpl() override;
+        std::pair<float32, float32> GetMousePositionImpl() override;
     };
 }
 

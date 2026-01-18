@@ -108,8 +108,8 @@ namespace NanSu
         D3D11_VIEWPORT viewport = {};
         viewport.TopLeftX = 0.0f;
         viewport.TopLeftY = 0.0f;
-        viewport.Width = static_cast<f32>(m_Width);
-        viewport.Height = static_cast<f32>(m_Height);
+        viewport.Width = static_cast<float32>(m_Width);
+        viewport.Height = static_cast<float32>(m_Height);
         viewport.MinDepth = 0.0f;
         viewport.MaxDepth = 1.0f;
         m_DeviceContext->RSSetViewports(1, &viewport);
@@ -162,12 +162,12 @@ namespace NanSu
         NS_ENGINE_INFO("DirectX 11 context shut down");
     }
 
-    void DX11Context::Clear(f32 r, f32 g, f32 b, f32 a)
+    void DX11Context::Clear(float32 r, float32 g, float32 b, float32 a)
     {
         // Ensure render target is bound (ImGui may have changed it)
         m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, nullptr);
 
-        f32 clearColor[4] = { r, g, b, a };
+        float32 clearColor[4] = { r, g, b, a };
         m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, clearColor);
     }
 
@@ -233,8 +233,8 @@ namespace NanSu
         D3D11_VIEWPORT viewport = {};
         viewport.TopLeftX = 0.0f;
         viewport.TopLeftY = 0.0f;
-        viewport.Width = static_cast<f32>(width);
-        viewport.Height = static_cast<f32>(height);
+        viewport.Width = static_cast<float32>(width);
+        viewport.Height = static_cast<float32>(height);
         viewport.MinDepth = 0.0f;
         viewport.MaxDepth = 1.0f;
         m_DeviceContext->RSSetViewports(1, &viewport);
