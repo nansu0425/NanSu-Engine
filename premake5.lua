@@ -74,7 +74,7 @@ project "Engine"
     filter {}
 
     -- stb 구현 파일은 PCH 제외
-    filter "files:Source/Engine/ThirdParty/**.cpp"
+    filter "files:Source/Engine/Renderer/stb_image.cpp"
         flags { "NoPCH" }
     filter {}
 

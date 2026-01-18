@@ -2,7 +2,7 @@
 #include "Core/Application.h"
 #include "Core/Input.h"
 #include "Events/EventDispatcher.h"
-#include "ImGui/ImGuiLayer.h"
+#include "UI/ImGuiLayer.h"
 #include "Renderer/Renderer.h"
 
 namespace NanSu
